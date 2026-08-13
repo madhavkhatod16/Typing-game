@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Typing Game</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+    background:#e8f0ff;
+}
+
+.container{
+    width:850px;
+    max-width:100%;
+    background:#ffffff;
+    padding:35px;
+    border-radius:30px;
+    border:4px solid #111827;
+    box-shadow:12px 12px 0 #111827;
+}
+
+h1{
+    text-align:center;
+    font-size:42px;
+    font-weight:900;
+    letter-spacing:3px;
+    color:#111827;
+    margin-bottom:28px;
+}
+
+h1::first-letter{
+    color:#ff5c35;
+}
+
+#start,#restart{
+    height:52px;
+    padding:0 28px;
+    border-radius:50px;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.2s;
+    margin-bottom:25px;
+}
+
+#start{
+    margin-left:190px;
+    color:white;
+    background:#ff5c35;
+    border:3px solid #111827;
+    box-shadow:4px 4px 0 #111827;
+}
+
+#restart{
+    margin-left:10px;
+    color:#111827;
+    background:#ffd447;
+    border:3px solid #111827;
+    box-shadow:4px 4px 0 #111827;
+}
+
+#start:hover,#restart:hover{
+    transform:translate(2px,2px);
+    box-shadow:2px 2px 0 #111827;
+}
+
+#start:active,#restart:active{
+    transform:translate(4px,4px);
+    box-shadow:0 0 0 #111827;
+}
+
+#paragraph{
+    position:relative;
+    min-height:190px;
+    padding:35px;
+    background:#f5f7fb;
+    border:3px solid #111827;
+    border-radius:20px;
+    font-size:22px;
+    line-height:42px;
+    color:#64748b;
+    box-shadow:6px 6px 0 #cbd5e1;
+}
+
+#paragraph::before{
+    content:"TYPE HERE";
+    position:absolute;
+    top:-16px;
+    left:25px;
+    padding:5px 14px;
+    background:#22c55e;
+    color:#111827;
+    border:3px solid #111827;
+    border-radius:8px;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.correct{
+    color:#16a34a;
+    font-weight:700;
+}
+
+.wrong{
+    color:#dc2626;
+    background:#fecaca;
+    border-radius:5px;
+    padding:2px 3px;
+}
+
+#timer{
+    margin-top:25px;
+    padding:18px;
+    text-align:center;
+    background:#111827;
+    color:#ffffff;
+    border-radius:18px;
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:2px;
+    border:3px solid #111827;
+}
+
+#result{
+    margin-top:20px;
+    padding:20px;
+    background:#d9f99d;
+    color:#111827;
+    border:3px solid #111827;
+    border-radius:18px;
+    text-align:center;
+    font-size:18px;
+    line-height:30px;
+    font-weight:800;
+}
+
+@media(max-width:700px){
+    body{
+        padding:15px;
+    }
+
+    .container{
+        padding:25px 18px;
+        border-radius:22px;
+        box-shadow:7px 7px 0 #111827;
+    }
+
+    h1{
+        font-size:30px;
+    }
+
+    #start,#restart{
+        width:100%;
+        margin-left:0;
+        margin-bottom:12px;
+    }
+
+    #paragraph{
+        padding:35px 20px 25px;
+        font-size:18px;
+        line-height:34px;
+    }
+
+    #timer{
+        font-size:22px;
+    }
+
+    #result{
+        font-size:16px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>TYPING GAME</h1>
+<button id="start">START GAME</button>
+<button id="restart">RESTART GAME</button>
+<p id="paragraph"></p>
+<h2 id="timer"></h2>
+<div id="result"></div>
+</div>
+
+<script>
+var paragraphs = [
+    "They stay far and distant in Parliament House complex and have been at loggerheads over the issue of students' protests at Jantar Mantar ever since the Monsoon Session commenced."
+];
+
+var para = document.getElementById("paragraph");
+var timer = document.getElementById("timer");
+var result = document.getElementById("result");
+var start = document.getElementById("start");
+var restart = document.getElementById("restart");
+
+var typed = "";
+var over = false;
+var started = false;
+var time = 60;
+var count;
+
+showParagraph();
+
+function showParagraph() {
+    para.innerHTML = "";
+    var text = paragraphs[0];
+    text.split("").forEach(function(letter) {
+        para.innerHTML += "<span>" + letter + "</span>";
+    });
+    update();
+}
+
+function update() {
+    var spans = para.querySelectorAll("span");
+    var correct = 0;
+    for (var i = 0; i < spans.length; i++) {
+        spans[i].className = "";
+        if (typed[i] == null) {
+            continue;
+        }
+        if (typed[i] == spans[i].innerText) {
+            spans[i].className = "correct";
+            correct++;
+        }
+        else {
+            spans[i].className = "wrong";
+        }
+    }
+    if (typed.length == spans.length && over == false) {
+        over = true;
+        clearInterval(count);
+        var accuracy = calculateAccuracy();
+        var timeTaken = 60 - time;
+        result.innerHTML =
+            "Correct Letters : " + correct +
+            "<br>Time Taken : " + timeTaken + " sec" +
+            "<br>Total Letters : " + typed.length +
+            "<br>Accuracy : " + accuracy.toFixed(2) + "%";
+
+        wpm();
+    }
+}
+
+function calculateAccuracy() {
+    var spans = para.querySelectorAll("span");
+    var correct = 0;
+    for (var i = 0; i < typed.length; i++) {
+        if (typed[i] == spans[i].innerText) {
+            correct++;
+        }
+    }
+    if (typed.length == 0) {
+        return 0;
+    }
+    return (correct / typed.length) * 100;
+}
+
+window.addEventListener("keyup", function(e) {
+    if (started == false || over) {
+        return;
+    }
+    if (e.code == "Space") {
+        e.preventDefault();
+    }
+    if (e.key == "Backspace") {
+        typed = typed.slice(0, typed.length - 1);
+    }
+    else if (e.key.length == 1) {
+        typed += e.key;
+    }
+    update();
+});
+
+start.addEventListener("click", function() {
+    if (started) {
+        return;
+    }
+    started = true;
+    over = false;
+    typed = "";
+    time = 60;
+    result.innerHTML = "";
+    showParagraph();
+    timer.innerHTML = "Time Left : " + time + " sec";
+    clearInterval(count);
+    count = setInterval(function() {
+        time--;
+        timer.innerHTML = "Time Left : " + time + " sec";
+        if (time <= 0) {
+            over = true;
+            clearInterval(count);
+            var spans = para.querySelectorAll("span");
+            var correct = 0;
+            for (var i = 0; i < spans.length; i++) {
+                if (typed[i] == spans[i].innerText) {
+                    correct++;
+                }
+            }
+
+            var accuracy = calculateAccuracy();
+            result.innerHTML =
+                "Time Over!<br>" +
+                "Correct Letters : " + correct +
+                "<br>Total Letters : " + typed.length + 
+                "<br>Accuracy : " + accuracy.toFixed(2) + "%";
+
+            wpm();
+        }
+    }, 1000);
+});
+
+restart.addEventListener("click", function() {
+    clearInterval(count);
+    typed = "";
+    over = false;
+    started = true;
+    time = 60;
+    result.innerHTML = "";
+    showParagraph();
+    timer.innerHTML = "Time Left : " + time + " sec";
+    count = setInterval(function() {
+        time--;
+        timer.innerHTML = "Time Left : " + time + " sec";
+        if (time <= 0) {
+            over = true;
+            clearInterval(count);
+            var spans = para.querySelectorAll("span");
+            var correct = 0;
+            for (var i = 0; i < spans.length; i++) {
+                if (typed[i] == spans[i].innerText) {
+                    correct++;
+                }
+            }
+            var accuracy = calculateAccuracy();
+            result.innerHTML =
+                "Time Over!<br>" +
+                "Correct Letters : " + correct +
+                "<br>Total Letters : " + typed.length + 
+                "<br>Accuracy : " + accuracy.toFixed(2) + "%";
+
+            wpm();
+        }
+    }, 1000);
+});
+
+function wpm() {
+    var spans = para.querySelectorAll("span");
+    var correct = 0;
+    for (var i = 0; i < typed.length; i++) {
+        if (typed[i] === spans[i].innerText) {
+            correct++;
+        }
+    }
+    var timeTaken = 60 - time;
+
+    if (timeTaken <= 0) {
+        timeTaken = 1;
+    }
+    var calculatedWpm = (correct / 5) / (timeTaken / 60);
+    result.innerHTML +=
+        "<br>WPM : " + calculatedWpm.toFixed(2);
+}
+
+</script>
+</body>
+</html>
+
