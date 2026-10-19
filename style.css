@@ -1,0 +1,230 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #151720;
+    color: white;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.main-container {
+    display: flex;
+    gap: 25px;
+    width: 100%;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.game-card,
+.results-card {
+    background: #202330;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #35394a;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.game-card {
+    flex: 3;
+    min-width: 0;
+}
+
+.results-card {
+    flex: 1;
+    min-width: 240px;
+}
+
+.game-card:hover,
+.results-card:hover {
+    border-color: #8b78ff;
+}
+
+h2 {
+    font-size: 30px;
+    color: #b5a5ff;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+h3 {
+    font-size: 21px;
+    color: #b5a5ff;
+    margin-top: 0;
+    margin-bottom: 22px;
+}
+
+#passage {
+    font-size: 19px;
+    line-height: 2;
+    padding: 25px;
+    margin-top: 25px;
+    min-height: 200px;
+    overflow-wrap: anywhere;
+    background: #171923;
+    border: 1px solid #393d4f;
+    border-radius: 12px;
+    color: #c7cad5;
+    transition: 0.3s;
+}
+
+#passage:hover {
+    border-color: #6558a8;
+}
+
+.correct {
+    color: #4ade80;
+}
+
+.wrong {
+    color: #ff647c;
+    background: #44232d;
+    border-radius: 3px;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+button {
+    padding: 13px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background: #8b78ff;
+    color: white;
+    transition: 0.3s;
+}
+
+button:hover:not(:disabled) {
+    background: #a596ff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 120, 255, 0.25);
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#stop-btn {
+    background: #393d4f;
+    color: white;
+}
+
+#stop-btn:hover:not(:disabled) {
+    background: #50566c;
+    box-shadow: none;
+}
+
+.results-card p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    color: #bfc3d1;
+    margin: 15px 0;
+    padding: 15px;
+    background: #292d3c;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    transition: 0.3s;
+}
+
+.results-card p:hover {
+    background: #35394b;
+    border-color: #4a4f65;
+    transform: translateX(3px);
+}
+
+.results-card p span {
+    color: #4ade80;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+::selection {
+    background: #8b78ff;
+    color: white;
+}
+
+@media (max-width: 800px) {
+    .main-container {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .game-card {
+        flex: auto;
+    }
+
+    .results-card {
+        flex: auto;
+        min-width: 0;
+    }
+
+    h2 {
+        font-size: 26px;
+    }
+
+    #passage {
+        font-size: 17px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 450px) {
+    .main-container {
+        padding: 12px;
+        gap: 15px;
+    }
+
+    .game-card,
+    .results-card {
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    h2 {
+        font-size: 23px;
+    }
+
+    h3 {
+        font-size: 19px;
+    }
+
+    #passage {
+        font-size: 15px;
+        line-height: 1.9;
+        padding: 15px;
+        min-height: 160px;
+    }
+
+    .controls {
+        gap: 10px;
+    }
+
+    button {
+        padding: 11px 17px;
+        font-size: 14px;
+    }
+
+    .results-card p {
+        padding: 12px;
+        font-size: 14px;
+    }
+}
