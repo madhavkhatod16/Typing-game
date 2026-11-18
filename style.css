@@ -18,8 +18,7 @@ body {
     padding: 30px;
 }
 
-.game-card,
-.results-card {
+.game-card, .results-card {
     background: #202330;
     padding: 30px;
     border-radius: 15px;
@@ -38,8 +37,7 @@ body {
     min-width: 240px;
 }
 
-.game-card:hover,
-.results-card:hover {
+.game-card:hover, .results-card:hover {
     border-color: #8b78ff;
 }
 
@@ -69,10 +67,24 @@ h3 {
     border-radius: 12px;
     color: #c7cad5;
     transition: 0.3s;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    height: 50px;
+    display: flex;
+    align-items: center;
 }
 
 #passage:hover {
     border-color: #6558a8;
+}
+
+#passage-inner {
+    padding-left: 50px;
+    display: inline-block;
+    position: absolute;
+    left: 10px; 
+    transition: transform 0.1s ease-out;
 }
 
 .correct {
@@ -167,20 +179,16 @@ button:disabled {
         padding: 20px;
         gap: 20px;
     }
-
     .game-card {
         flex: auto;
     }
-
     .results-card {
         flex: auto;
         min-width: 0;
     }
-
     h2 {
         font-size: 26px;
     }
-
     #passage {
         font-size: 17px;
         padding: 20px;
@@ -192,37 +200,29 @@ button:disabled {
         padding: 12px;
         gap: 15px;
     }
-
-    .game-card,
-    .results-card {
+    .game-card, .results-card {
         padding: 18px;
         border-radius: 12px;
     }
-
     h2 {
         font-size: 23px;
     }
-
     h3 {
         font-size: 19px;
     }
-
     #passage {
         font-size: 15px;
         line-height: 1.9;
         padding: 15px;
         min-height: 160px;
     }
-
     .controls {
         gap: 10px;
     }
-
     button {
         padding: 11px 17px;
         font-size: 14px;
     }
-
     .results-card p {
         padding: 12px;
         font-size: 14px;
